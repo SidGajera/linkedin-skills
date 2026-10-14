@@ -441,7 +441,7 @@ function initSkillsCatalog() {
         </div>
         <div class="skill-actions">
           <button class="btn btn-outline btn-xs btn-copy-invocation" data-name="${skill.name}">Copy Agent Command</button>
-          <a href="https://github.com/sergebulaev/linkedin-skills/blob/main/${skill.path}" target="_blank" class="btn btn-secondary btn-xs">View SKILL.md</a>
+          <a href="https://github.com/SidGajera/linkedin-skills/blob/main/${skill.path}" target="_blank" class="btn btn-secondary btn-xs">View SKILL.md</a>
         </div>
       `;
       grid.appendChild(card);
