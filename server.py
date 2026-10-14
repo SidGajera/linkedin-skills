@@ -18,7 +18,7 @@ from http.server import HTTPServer, SimpleHTTPRequestHandler
 from urllib.parse import urlparse
 
 ROOT = pathlib.Path(__file__).resolve().parent
-STATIC_DIR = ROOT / "dashboard" / "static"
+STATIC_DIR = ROOT / "public" if (ROOT / "public").is_dir() else ROOT / "dashboard" / "static"
 
 # Load environment if .env exists
 try:

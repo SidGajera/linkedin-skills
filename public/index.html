@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinkedIn Skills Studio | AI Writing, Humanizer &amp; Automation Hub</title>
+  <meta name="description" content="Localhost workspace for LinkedIn Skills: draft high-converting posts, audit &amp; humanize AI tells, draft threaded replies, and inspect 12 agent skills.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+            <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9h2.79v8.37H6.46v-8.37M7.86 6.54a1.63 1.63 0 0 0-1.63 1.63 1.63 1.63 0 0 0 1.63 1.63 1.63 1.63 0 0 0 1.63-1.63c0-.9-.73-1.63-1.63-1.63Z"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">LinkedIn Skills</span>
+          <span class="brand-badge">Studio Local</span>
+        </div>
+      </div>
+
+      <nav class="nav-menu" id="nav-menu">
+        <button class="nav-item active" data-tab="tab-studio" id="nav-btn-studio">
+          <span class="nav-icon">✍️</span>
+          <span class="nav-label">Post Studio</span>
+        </button>
+        <button class="nav-item" data-tab="tab-humanizer" id="nav-btn-humanizer">
+          <span class="nav-icon">🛡️</span>
+          <span class="nav-label">AI Tell Humanizer</span>
+        </button>
+        <button class="nav-item" data-tab="tab-comments" id="nav-btn-comments">
+          <span class="nav-icon">💬</span>
+          <span class="nav-label">Comment Drafter</span>
+        </button>
+        <button class="nav-item" data-tab="tab-skills" id="nav-btn-skills">
+          <span class="nav-icon">⚡</span>
+          <span class="nav-label">12 Skills Catalog</span>
+        </button>
+        <button class="nav-item" data-tab="tab-diagnostics" id="nav-btn-diagnostics">
+          <span class="nav-icon">🛠️</span>
+          <span class="nav-label">Diagnostics &amp; Keys</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="status-indicator">
+          <span class="status-dot pulse-green"></span>
+          <span class="status-text" id="sidebar-status-text">Localhost:8000 Active</span>
+        </div>
+        <div class="version-tag">linkedin-skills v1.1.19</div>
+      </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="main-content">
+      <!-- Top Bar -->
+      <header class="top-bar">
+        <div class="page-title-area">
+          <h1 id="page-heading">LinkedIn Post Studio &amp; Live Feed Preview</h1>
+          <p class="page-subheading" id="page-subheading">Compose high-reach posts, enforce the 140-char fold, and eliminate robotic AI writing.</p>
+        </div>
+        <div class="top-actions">
+          <button class="btn btn-secondary btn-sm" id="btn-quick-selftest">
+            <span>⚡ Test Offline Suite</span>
+          </button>
+          <a href="https://github.com/sergebulaev/linkedin-skills" target="_blank" class="btn btn-outline btn-sm">
+            <span>GitHub Repo</span>
+          </a>
+        </div>
+      </header>
+
+      <!-- TAB 1: POST STUDIO & PREVIEW -->
+      <section class="tab-pane active" id="tab-studio">
+        <div class="studio-grid">
+          <!-- Editor Column -->
+          <div class="editor-card card">
+            <div class="card-header">
+              <div class="header-title-group">
+                <h3>Drafting Canvas</h3>
+                <span class="helper-text">Optimized for 2026 LinkedIn Algorithm</span>
+              </div>
+              <div class="hook-selector-group">
+                <label for="hook-select">Hook Formula:</label>
+                <select id="hook-select" class="select-dropdown">
+                  <option value="">— Select a Canonical Hook —</option>
+                  <!-- Populated dynamically via JS -->
+                </select>
+                <button class="btn btn-outline btn-xs" id="btn-insert-hook" title="Insert template skeleton">Insert</button>
+              </div>
+            </div>
+
+            <div class="editor-body">
+              <div class="hook-banner" id="hook-banner" style="display: none;">
+                <div class="hook-banner-content">
+                  <strong id="hook-banner-title"></strong>: <span id="hook-banner-desc"></span>
+                </div>
+                <button class="btn-close-sm" id="btn-close-hook-banner">&times;</button>
+              </div>
+
+              <textarea id="post-editor" class="editor-textarea" placeholder="Start typing your post here, or select a hook formula from the dropdown above...&#10;&#10;Key rules:&#10;• First 140 chars must earn the '...see more' click.&#10;• Hard ceiling: 3,000 chars.&#10;• 0-1 em dash per 100 words. No robotic cliché words."></textarea>
+            </div>
+
+            <div class="editor-footer">
+              <div class="counter-group">
+                <div class="metric-pill" id="pill-char-count">
+                  <span class="metric-num" id="stat-chars">0</span> / 3000 chars
+                </div>
+                <div class="metric-pill" id="pill-fold-status">
+                  <span class="fold-dot ok" id="fold-dot"></span>
+                  <span id="stat-fold">Fold: Safe (0/140)</span>
+                </div>
+                <div class="metric-pill" id="pill-words">
+                  <span class="metric-num" id="stat-words">0</span> words
+                </div>
+              </div>
+
+              <div class="action-buttons">
+                <button class="btn btn-secondary btn-sm" id="btn-format-spacing">Format Spacing</button>
+                <button class="btn btn-secondary btn-sm" id="btn-send-to-humanizer">Scrub AI Tells</button>
+                <button class="btn btn-primary btn-sm" id="btn-copy-post">
+                  <span id="copy-btn-text">Copy Post</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Feed Mockup Column -->
+          <div class="preview-card card">
+            <div class="card-header">
+              <div class="header-title-group">
+                <h3>Live LinkedIn Feed Card</h3>
+                <span class="helper-text">Accurate 2026 Feed Layout &amp; Truncation</span>
+              </div>
+              <span class="badge badge-accent">Interactive Feed</span>
+            </div>
+
+            <div class="linkedin-preview-container">
+              <div class="li-post-card">
+                <!-- Author Info -->
+                <div class="li-card-header">
+                  <div class="li-avatar">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 24 24' fill='%230A66C2'><circle cx='12' cy='12' r='10'/><path fill='white' d='M12 12c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-1.5c0-2.33-4.67-3.5-7-3.5z'/></svg>" alt="Profile Avatar" class="avatar-img">
+                  </div>
+                  <div class="li-meta">
+                    <div class="li-name-row">
+                      <span class="li-author-name">Sergey Bulaev</span>
+                      <span class="li-degree">• 1st</span>
+                      <span class="li-icon-in">in</span>
+                    </div>
+                    <div class="li-headline">Building LinkedIn Skills for AI Agents | Open-source MIT</div>
+                    <div class="li-time-row">
+                      <span>Just now</span>
+                      <span class="li-dot">•</span>
+                      <span class="li-globe">🌐</span>
+                    </div>
+                  </div>
+                  <div class="li-more-actions">•••</div>
+                </div>
+
+                <!-- Post Content with Truncation -->
+                <div class="li-card-content" id="li-post-content">
+                  <p class="li-placeholder-text">Your formatted LinkedIn post will render here live as you type. Watch where the "...see more" cutoff lands to hook mobile and desktop readers.</p>
+                </div>
+
+                <!-- Engagement Reaction Summary -->
+                <div class="li-card-reactions-bar">
+                  <div class="li-reaction-icons">
+                    <span class="icon-bubble like">👍</span>
+                    <span class="icon-bubble clap">👏</span>
+                    <span class="icon-bubble heart">❤️</span>
+                    <span class="li-reaction-count">249</span>
+                  </div>
+                  <div class="li-reaction-stats">
+                    <span>42 comments</span> • <span>18 reposts</span>
+                  </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="li-card-footer">
+                  <button class="li-action-btn"><span class="btn-icon">👍</span> Like</button>
+                  <button class="li-action-btn"><span class="btn-icon">💬</span> Comment</button>
+                  <button class="li-action-btn"><span class="btn-icon">🔁</span> Repost</button>
+                  <button class="li-action-btn"><span class="btn-icon">📤</span> Send</button>
+                </div>
+              </div>
+
+              <!-- Metric Advice Card -->
+              <div class="feed-advice-box">
+                <div class="advice-title">💡 2026 Feed Optimization Tips</div>
+                <ul class="advice-list">
+                  <li><strong>The Fold Rule:</strong> Desktop hides text after ~140-210 characters. Mobile after ~100 characters. Put your payoff hook on line 1.</li>
+                  <li><strong>White Space:</strong> Avoid dense walls of text. Leave 1 clean blank line between key points.</li>
+                  <li><strong>Algorithm Reach:</strong> Do not include outbound links in the post body; put them in the first comment or mention in comments.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: AI TELL HUMANIZER -->
+      <section class="tab-pane" id="tab-humanizer">
+        <div class="humanizer-container">
+          <div class="humanizer-header card">
+            <div class="humanizer-header-text">
+              <h2>Anti-AI Tell Auditor &amp; Rewriter (V3 2026)</h2>
+              <p>Detects 2026 AI markers: density-scored vocabulary, fake vulnerability, reveal bridges, excessive em dashes, and robotic rhythms.</p>
+            </div>
+            <div class="humanizer-controls">
+              <button class="btn btn-secondary" id="btn-load-sample-ai">Load AI Sample Text</button>
+              <button class="btn btn-primary" id="btn-run-audit">
+                <span>🛡️ Run AI Audit &amp; Scrub</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Score & Metrics Cards -->
+          <div class="metrics-row">
+            <div class="metric-card card">
+              <div class="metric-card-title">Authenticity Rating</div>
+              <div class="metric-card-val" id="metric-rating">Ready to scan</div>
+              <div class="metric-sub" id="metric-score-text">Paste text to calculate reader trust</div>
+            </div>
+            <div class="metric-card card">
+              <div class="metric-card-title">AI Tell Violations</div>
+              <div class="metric-card-val" id="metric-issues-count">0</div>
+              <div class="metric-sub">Single-hit &amp; density markers</div>
+            </div>
+            <div class="metric-card card">
+              <div class="metric-card-title">Em Dash Density</div>
+              <div class="metric-card-val" id="metric-em-dashes">0</div>
+              <div class="metric-sub">Threshold: max 1 per 100 words</div>
+            </div>
+            <div class="metric-card card">
+              <div class="metric-card-title">Word Count</div>
+              <div class="metric-card-val" id="metric-words">0</div>
+              <div class="metric-sub">Paragraphs: <span id="metric-paragraphs">0</span></div>
+            </div>
+          </div>
+
+          <!-- Diff & Comparison View -->
+          <div class="diff-grid">
+            <div class="card diff-card">
+              <div class="card-header">
+                <h3>Original Text (Input)</h3>
+                <span class="badge badge-warning">AI Marker Scan</span>
+              </div>
+              <div class="diff-body">
+                <textarea id="humanizer-input" class="editor-textarea" placeholder="Paste your drafted LinkedIn post or comment here to audit for AI tells..."></textarea>
+              </div>
+            </div>
+
+            <div class="card diff-card">
+              <div class="card-header">
+                <h3>Humanized Clean Output</h3>
+                <div class="header-actions">
+                  <span class="badge badge-success">Polished Output</span>
+                  <button class="btn btn-outline btn-xs" id="btn-copy-humanized">Copy Clean Draft</button>
+                </div>
+              </div>
+              <div class="diff-body">
+                <div id="humanized-output" class="humanized-result-box">
+                  <span class="placeholder-text">Click "Run AI Audit &amp; Scrub" to see the humanized version here with all robotic tells cleaned.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Detected Issues Breakdown -->
+          <div class="card issues-card">
+            <div class="card-header">
+              <h3>Detected Tells &amp; Algorithmic Flags</h3>
+              <span class="badge badge-neutral" id="issues-badge">0 items</span>
+            </div>
+            <div class="issues-table-container">
+              <table class="issues-table" id="issues-table">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Flagged Element</th>
+                    <th>Algorithmic Rationale</th>
+                    <th>Recommended Fix</th>
+                  </tr>
+                </thead>
+                <tbody id="issues-tbody">
+                  <tr>
+                    <td colspan="4" class="text-muted text-center">No audit performed yet. Enter text and click "Run AI Audit &amp; Scrub".</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: COMMENT & REPLY DRAFTER -->
+      <section class="tab-pane" id="tab-comments">
+        <div class="comments-container">
+          <div class="card">
+            <div class="card-header">
+              <div class="header-title-group">
+                <h2>Value-First Comment &amp; Reply Drafter</h2>
+                <span class="helper-text">Enforces NLP depth rules, new keyword introduction, and 2-level threaded reply flattening</span>
+              </div>
+            </div>
+
+            <div class="comment-drafter-grid">
+              <div class="comment-input-area">
+                <div class="form-group">
+                  <label for="comment-parent-text">Parent Post or Comment Content:</label>
+                  <textarea id="comment-parent-text" class="form-input" rows="5" placeholder="Paste the post content or parent comment you are responding to..."></textarea>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col">
+                    <label for="comment-type">Response Type:</label>
+                    <select id="comment-type" class="select-dropdown">
+                      <option value="top-level">Top-Level Comment (200-350 chars)</option>
+                      <option value="reply-author">Reply as Author (invites sub-thread)</option>
+                      <option value="reply-peer">Reply to Peer (2-level flattened)</option>
+                    </select>
+                  </div>
+                  <div class="form-group col">
+                    <label for="comment-reaction">Publora Reaction:</label>
+                    <select id="comment-reaction" class="select-dropdown">
+                      <option value="INTEREST">INTEREST (Default)</option>
+                      <option value="LIKE">LIKE</option>
+                      <option value="PRAISE">PRAISE</option>
+                      <option value="EMPATHY">EMPATHY</option>
+                      <option value="APPRECIATION">APPRECIATION</option>
+                      <option value="ENTERTAINMENT">ENTERTAINMENT</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="comment-key-insight">Your Unique Angle / Data Point:</label>
+                  <input type="text" id="comment-key-insight" class="form-input" placeholder="e.g. In our 2026 data, we noticed an 18% lift when separating hook and body">
+                </div>
+
+                <div class="form-actions">
+                  <button class="btn btn-primary" id="btn-generate-comment">
+                    <span>✨ Draft Structured Comment</span>
+                  </button>
+                  <button class="btn btn-secondary" id="btn-load-sample-comment">Load Sample Post</button>
+                </div>
+              </div>
+
+              <div class="comment-preview-area">
+                <div class="card inner-card">
+                  <div class="card-header">
+                    <h4>Generated Comment Card</h4>
+                    <span class="badge badge-accent" id="comment-char-pill">0 / 350 chars</span>
+                  </div>
+                  <div class="comment-output-box" id="comment-output-box">
+                    <p class="placeholder-text">Fill in the parent post and click "Draft Structured Comment". The resulting comment follows the exact voice rules: no sycophancy ("Great post!"), introduces new concepts, and includes a screenshot-worthy line.</p>
+                  </div>
+                  <div class="card-footer-actions">
+                    <button class="btn btn-outline btn-sm" id="btn-copy-comment">Copy Comment Text</button>
+                    <button class="btn btn-secondary btn-sm" id="btn-humanize-comment">Verify with Humanizer</button>
+                  </div>
+                </div>
+
+                <div class="voice-rules-cheat">
+                  <div class="cheat-title">Voice Rules Checklist:</div>
+                  <ul>
+                    <li>✓ 200–350 characters total. Two short paragraphs max.</li>
+                    <li>✓ One concrete number or named entity included.</li>
+                    <li>✓ No generic praise ("100%", "Great read", "Love this").</li>
+                    <li>✓ Introduces at least one noun not in the parent post.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: 12 SKILLS CATALOG -->
+      <section class="tab-pane" id="tab-skills">
+        <div class="skills-catalog-container">
+          <div class="catalog-header card">
+            <div class="catalog-header-text">
+              <h2>The 12 LinkedIn Agent Skills</h2>
+              <p>Each skill is built for autonomous execution in Claude Code, Codex, and agentic environments.</p>
+            </div>
+            <div class="catalog-filters">
+              <input type="text" id="skill-search" class="form-input search-box" placeholder="Search skills, keywords, rules...">
+              <div class="filter-pills" id="filter-pills">
+                <button class="filter-pill active" data-category="All">All (12)</button>
+                <button class="filter-pill" data-category="Creation">Creation</button>
+                <button class="filter-pill" data-category="Engagement">Engagement</button>
+                <button class="filter-pill" data-category="Optimization">Optimization</button>
+                <button class="filter-pill" data-category="Strategy">Strategy</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="skills-grid" id="skills-grid">
+            <!-- Dynamic Cards Populated via JS -->
+            <div class="loading-state">Loading skills catalog...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: SYSTEM DIAGNOSTICS & CREDENTIALS -->
+      <section class="tab-pane" id="tab-diagnostics">
+        <div class="diagnostics-container">
+          <!-- Credentials Status -->
+          <div class="card diagnostics-card">
+            <div class="card-header">
+              <div class="header-title-group">
+                <h2>API Credentials &amp; Layer Connection</h2>
+                <span class="helper-text">Configure optional automation backends or run purely offline</span>
+              </div>
+              <button class="btn btn-primary btn-sm" id="btn-save-credentials">Save to .env</button>
+            </div>
+
+            <div class="credentials-form-grid">
+              <div class="cred-field">
+                <div class="cred-label-row">
+                  <label for="cred-apify">APIFY_TOKEN (Reading Layer)</label>
+                  <span class="cred-status-tag" id="status-tag-apify">Checking...</span>
+                </div>
+                <input type="password" id="cred-apify" class="form-input" placeholder="apify_api_...">
+                <span class="field-hint">Used by 8 skills to read posts, comment threads, and engager profiles without cookies.</span>
+              </div>
+
+              <div class="cred-field">
+                <div class="cred-label-row">
+                  <label for="cred-publora">PUBLORA_API_KEY (Publishing Layer)</label>
+                  <span class="cred-status-tag" id="status-tag-publora">Checking...</span>
+                </div>
+                <input type="password" id="cred-publora" class="form-input" placeholder="sk_...">
+                <span class="field-hint">Enables 1-click scheduling, commenting, and reaction posting via Publora API.</span>
+              </div>
+
+              <div class="cred-field">
+                <div class="cred-label-row">
+                  <label for="cred-linkedin-id">LINKEDIN_PLATFORM_ID</label>
+                  <span class="cred-status-tag" id="status-tag-linkedin-id">Checking...</span>
+                </div>
+                <input type="text" id="cred-linkedin-id" class="form-input" placeholder="linkedin-ABC123">
+                <span class="field-hint">Your Publora LinkedIn connection ID. Found under Channels in Publora dashboard.</span>
+              </div>
+
+              <div class="cred-field">
+                <div class="cred-label-row">
+                  <label for="cred-pixfaro">PIXFARO_TOKEN (Visual Media)</label>
+                  <span class="cred-status-tag" id="status-tag-pixfaro">Checking...</span>
+                </div>
+                <input type="password" id="cred-pixfaro" class="form-input" placeholder="pf_live_...">
+                <span class="field-hint">Generates on-brand graphics, carousels, and quote-cards for posts.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Diagnostic Runner -->
+          <div class="card terminal-card">
+            <div class="card-header">
+              <div class="header-title-group">
+                <h3>Self-Test Suite &amp; Integration Diagnostics</h3>
+                <span class="helper-text">Executes `python scripts/selftest.py` in your local environment</span>
+              </div>
+              <button class="btn btn-secondary btn-sm" id="btn-run-terminal-selftest">
+                <span id="run-test-label">▶ Run Self-Test Now</span>
+              </button>
+            </div>
+
+            <div class="terminal-window">
+              <div class="terminal-bar">
+                <span class="term-dot red"></span>
+                <span class="term-dot yellow"></span>
+                <span class="term-dot green"></span>
+                <span class="term-title">selftest.py — stdout</span>
+              </div>
+              <pre class="terminal-content" id="terminal-output">Click "Run Self-Test Now" to execute the full diagnostic suite (offline tests, schema checks, frontmatter validation, and credential checks)...</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Notification Toast -->
+  <div class="toast" id="toast">Copied to clipboard!</div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

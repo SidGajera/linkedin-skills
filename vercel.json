@@ -1,9 +1,5 @@
 {
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/server.py" },
-    { "source": "/style.css", "destination": "/dashboard/static/style.css" },
-    { "source": "/app.js", "destination": "/dashboard/static/app.js" },
-    { "source": "/", "destination": "/dashboard/static/index.html" },
-    { "source": "/(.*)", "destination": "/server.py" }
+    { "source": "/api/(.*)", "destination": "/api/index.py" }
   ]
 }
